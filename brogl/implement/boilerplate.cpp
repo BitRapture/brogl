@@ -138,4 +138,16 @@ namespace bro
 		glBindTexture(_target, 0);
 		return t;
 	}
+
+	attribparam CreateAttrib3D(std::string _name, GLenum _dataType)
+	{
+		attribparam a{ _name, 3, _dataType };
+		return a;
+	}
+
+	vaoparam CreateVAOparam(vbo& _vbo, const attribparams& _attribs)
+	{
+		vaoparam v{ _vbo, _attribs };
+		return v;
+	}
 }
