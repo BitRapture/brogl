@@ -71,6 +71,18 @@ namespace bro
 	/// @return Handle to the texture
 	texture CreateTexture2D(const void* _data, GLsizei _width, GLsizei _height, GLint _internalformat = GL_RGBA,
 		GLenum _format = GL_RGBA, GLenum _target = GL_TEXTURE_2D, GLenum _type = GL_UNSIGNED_BYTE, GLint _level = 0);
+
+	/// @brief Create an attribute parameter for parsing 3D variables
+	/// @param _name Attribute name
+	/// @param _dataType Data type of the attribute
+	/// @return Filled out attribute parameter struct
+	attribparam CreateAttrib3D(std::string _name, GLenum _dataType);
+
+	/// @brief Create a VAO parameter, bind attributes to one vbo
+	/// @param _vbo Handle to the vbo
+	/// @param _attribs Attributes to bind to the vbo
+	/// @return Filled out vao parameter struct
+	vaoparam CreateVAOparam(vbo& _vbo, const attribparams& _attribs);
 }
 
 #endif // !_BOILERPLATE_H_
