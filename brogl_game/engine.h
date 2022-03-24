@@ -16,6 +16,7 @@
 
 // STL dependencies
 #include <vector>
+#include <string>
 
 namespace bro
 {
@@ -51,6 +52,8 @@ namespace bro
 			sceneManager.AddScene(_scene); 
 		}
 
+		engine(const char* _title) { systemManager.title = _title; }
+		engine() {};
 	};
 }
 

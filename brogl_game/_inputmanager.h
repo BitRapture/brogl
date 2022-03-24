@@ -29,15 +29,12 @@ namespace bro
 		// Mouse state
 		int mouseState{ 0 };
 
-	private: // Internal manager methods
-		void PollKeyInput();
-
-		void PollMouseInput();
-
 	private: // Internal engine methods
 		friend engine;
 
-		void EngineUpdate();
+		void EnginePreUpdate();
+
+		void EnginePostUpdate();
 
 	public:
 		bool GetKey(const SDL_Scancode& _scanCode);

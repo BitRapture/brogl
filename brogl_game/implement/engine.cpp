@@ -20,6 +20,8 @@ namespace bro
 		// Main engine loop
 		while (!systemManager.quitting)
 		{
+			inputManager.EnginePreUpdate();
+
 			// SDL event polling
 			SDL_Event ev;
 			while (SDL_PollEvent(&ev))
@@ -33,7 +35,7 @@ namespace bro
 			}
 
 			// Update input manager
-			inputManager.EngineUpdate();
+			inputManager.EnginePostUpdate();
 
 			// Update time manager
 			timeManager.deltaTime = 0;

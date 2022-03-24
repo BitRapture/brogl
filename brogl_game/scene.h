@@ -90,11 +90,17 @@ namespace bro
 		/// @return Scene name
 		std::string GetName() { return sceneName; }
 
+	public: // Operator overloads
+		// Compare scenes
+		bool operator==(const scene& _scene) const { return this->sceneName == _scene.sceneName; }
+		bool operator==(const scene* _scene) const { return this->sceneName == _scene->sceneName; }
+		bool operator==(const char* _sceneName) const { return this->sceneName == _sceneName; }
+
 	public: // Instantiation
 
 		/// @brief Scene constructor
 		/// @param _sceneName Name to be given to instantiated scene
-		scene(std::string _sceneName) : sceneName{ _sceneName } {};
+		scene(const char* _sceneName) : sceneName{ _sceneName } {};
 	};
 }
 

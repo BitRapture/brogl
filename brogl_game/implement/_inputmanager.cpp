@@ -3,22 +3,15 @@
 namespace bro
 {
 
-	void _inputmanager::PollKeyInput()
-	{
-		// Copy over states from previous frame
-		for (int i = 0; i < keyStateSize; ++i) { keyMask[i] = keyStates[i]; }
-
-	}
-
-	void _inputmanager::PollMouseInput()
+	void _inputmanager::EnginePreUpdate()
 	{
 		mouseState = SDL_GetMouseState(&mouseX, &mouseY);
 	}
 
-	void _inputmanager::EngineUpdate()
+	void _inputmanager::EnginePostUpdate()
 	{
-		PollKeyInput();
-		PollMouseInput();
+		// Copy over states from previous frame
+		for (int i = 0; i < keyStateSize; ++i) { keyMask[i] = keyStates[i]; }
 	}
 
 	bool _inputmanager::GetKey(const SDL_Scancode& _scanCode)
@@ -38,7 +31,7 @@ namespace bro
 
 	float _inputmanager::GetAxis(const char* _axisName)
 	{
-
+		return 0;
 	}
 
 	_inputmanager::_inputmanager()
