@@ -14,8 +14,12 @@ namespace bro
 		bool quitting{ false };
 
 	public:
+		/// @brief Quit game engine runtime
 		void Quit() { quitting = true; };
 
+		/// @brief Check if game engine is quitting execution
+		/// @return Quitting flag
+		const bool& IsQuitting() { return quitting; }
 	};
 
 }
