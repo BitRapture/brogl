@@ -7,6 +7,8 @@
 #include "_scenemanager.h"
 #include "_timemanager.h"
 #include "_sysmanager.h"
+#include "_inputmanager.h"
+#include "scene.h"
 
 // External dependencies
 #include <SDL2/SDL.h>
@@ -19,7 +21,7 @@ namespace bro
 {
 	class engine
 	{
-	private:
+	private: // Internal managers
 		// Scene manager
 		_scenemanager sceneManager;
 
@@ -29,15 +31,23 @@ namespace bro
 		// Engine system manager
 		_sysmanager systemManager;
 
+		// Input manager
+		_inputmanager inputManager;
+
+	private: // Internal methods
+		/// @brief Start and initialize game engine 
+		void Start();
+
+		/// @brief Exit and free game engine
+		void Exit();
+
 	public:
 		/// @brief Run game engine
-		/// @param _deltaTime Delta time of a frame (todo: remove param, insert in body)
-		/// @return Quit status of program (todo: make void, return from loop in body)
-		bool Run(const double& _deltaTime);
+		void Run();
 
 		void AddScene(scene& _scene) 
 		{ 
-			_scene.EngineConnect(sceneManager, timeManager); 
+			_scene.EngineConnect(sceneManager, timeManager, systemManager); 
 			sceneManager.AddScene(_scene); 
 		}
 

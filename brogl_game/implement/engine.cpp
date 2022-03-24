@@ -3,17 +3,47 @@
 namespace bro
 {
 
-	bool engine::Run(const double& _deltaTime)
+	void engine::Start()
 	{
-		// Update time manager
-		timeManager.deltaTime = _deltaTime;
 
-		// Update the current scene
-		sceneManager.GetCurrentScene()->EngineUpdate();
-		sceneManager.GetCurrentScene()->EngineRender();
+	}
 
-		// Return system quit status
-		return systemManager.quitting;
+	void engine::Exit()
+	{
+
+	}
+
+	void engine::Run()
+	{
+		Start();
+
+		// Main engine loop
+		while (!systemManager.quitting)
+		{
+			// SDL event polling
+			SDL_Event ev;
+			while (SDL_PollEvent(&ev))
+			{
+				switch (ev.type)
+				{
+					case SDL_QUIT:
+						systemManager.Quit();
+					break;
+				}
+			}
+
+			// Update input manager
+			inputManager.EngineUpdate();
+
+			// Update time manager
+			timeManager.deltaTime = 0;
+
+			// Update the current scene
+			sceneManager.GetCurrentScene()->EngineUpdate();
+			sceneManager.GetCurrentScene()->EngineRender();
+		}
+
+		Exit();
 	}
 
 }
