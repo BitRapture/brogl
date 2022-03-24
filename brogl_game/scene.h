@@ -4,7 +4,9 @@
 
 // Local dependencies
 #include "../brogl/brogl.h"
+#include "_scenemanager.h"
 #include "_timemanager.h"
+#include "_sysmanager.h"
 
 // External dependencies
 #include <SDL2/SDL.h>
@@ -41,6 +43,7 @@ namespace bro
 		_timemanager* timeManager{ nullptr };
 
 		// Handle to engine's system manager
+		_sysmanager* systemManager{ nullptr };
 
 		// Handle to engine's input manager
 
@@ -58,10 +61,11 @@ namespace bro
 
 		/// @brief Allow the engine to connect to the scene on creation
 		/// @param _scenes Reference to the scene manager
-		void EngineConnect(_scenemanager& _scenes, _timemanager& _time) 
+		void EngineConnect(_scenemanager& _scenes, _timemanager& _time, _sysmanager& _system) 
 		{ 
 			sceneManager = &_scenes; 
 			timeManager = &_time;
+			systemManager = &_system;
 		};
 
 	public: // Scene related methods
