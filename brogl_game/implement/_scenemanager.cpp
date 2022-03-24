@@ -1,7 +1,12 @@
 #include "../_scenemanager.h"
+#include "../scene.h"
 
 namespace bro
 {
+	void _scenemanager::AddScene(scene& _scene) 
+	{ 
+		sceneMap[_scene.GetName()] = &_scene; 
+	}
 
 	void _scenemanager::UnloadScene()
 	{

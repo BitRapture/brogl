@@ -6,11 +6,9 @@
 #include <stdexcept>
 #include <map>
 
-// Local dependencies
-#include "scene.h"
-
 namespace bro
 {
+	class scene;
 	class engine;
 
 	class _scenemanager
@@ -33,7 +31,7 @@ namespace bro
 
 		/// @brief Add a scene to the manager
 		/// @param _scene Reference to scene
-		void AddScene(scene& _scene) { sceneMap[_scene.GetName()] = &_scene; }
+		void AddScene(scene& _scene);
 
 		/// @brief 
 		/// @param _name 
@@ -57,6 +55,7 @@ namespace bro
 		}
 
 		/// @brief 
+		/// @param _name 
 		void GotoScene(std::string _name)
 		{
 			UnloadScene();
