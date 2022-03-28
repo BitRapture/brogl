@@ -94,6 +94,8 @@ namespace bro
 		UnloadScene();
 		currentScene = scenes.begin() + *currentIndex;
 		currentIndex++;
+		// Wrap back to beginning of indices
+		if (currentIndex >= sceneIndices.end()) { currentIndex = sceneIndices.begin(); }
 		LoadScene();
 	}
 	void _scenemanager::PreviousScene()
@@ -101,6 +103,8 @@ namespace bro
 		UnloadScene();
 		currentScene = scenes.begin() + *currentIndex;
 		currentIndex--;
+		// Wrap back to end of indices
+		if (currentIndex <= sceneIndices.begin()) { currentIndex = sceneIndices.end() - 1; }
 		LoadScene();
 	}
 
