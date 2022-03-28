@@ -7,6 +7,7 @@
 #include "_scenemanager.h"
 #include "_timemanager.h"
 #include "_sysmanager.h"
+#include "_inputmanager.h"
 
 // External dependencies
 #include <SDL2/SDL.h>
@@ -46,9 +47,24 @@ namespace bro
 		_sysmanager* systemManager{ nullptr };
 
 		// Handle to engine's input manager
+		_inputmanager* inputManager{ nullptr };
 
 		// Scene name
 		std::string sceneName{ "defaultScene" };
+
+	protected: // Safe manager getters for scene derivation
+		/// @brief Get the scene manager
+		/// @return Scene manager
+		_scenemanager& Scenes() { if (sceneManager == nullptr) { throw std::runtime_error("Scene manager not initialized"); } return *sceneManager; }
+		/// @brief Get the time manager
+		/// @return Time manager
+		_timemanager& Time() { if (timeManager == nullptr) { throw std::runtime_error("Time manager not initialized"); } return *timeManager; }
+		/// @brief Get the system manager
+		/// @return System manager
+		_sysmanager& System() { if (systemManager == nullptr) { throw std::runtime_error("System manager not initialized"); } return *systemManager; }
+		/// @brief Get the input manager
+		/// @return Input manager
+		_inputmanager& Input() { if (inputManager == nullptr) { throw std::runtime_error("Input manager not initialized"); } return *inputManager; }
 
 	private: // Engine related internal methods
 		friend engine;
@@ -61,11 +77,13 @@ namespace bro
 
 		/// @brief Allow the engine to connect to the scene on creation
 		/// @param _scenes Reference to the scene manager
-		void EngineConnect(_scenemanager& _scenes, _timemanager& _time, _sysmanager& _system) 
+		void EngineConnect(_scenemanager& _scenes, _timemanager& _time, _sysmanager& _system,
+			_inputmanager& _input) 
 		{ 
 			sceneManager = &_scenes; 
 			timeManager = &_time;
 			systemManager = &_system;
+			inputManager = &_input;
 		};
 
 	public: // Scene related methods
