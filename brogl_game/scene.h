@@ -37,17 +37,18 @@ namespace bro
 		// Object refs with camera components
 		// gameObject -> component => camera => *
 
+	protected:
 		// Handle to engine's scene manager
-		_scenemanager* sceneManager{ nullptr };
+		_scenemanager& Scenes;
 
 		// Handle to engine's time manager
-		_timemanager* timeManager{ nullptr };
+		_timemanager& Time;
 
 		// Handle to engine's system manager
-		_sysmanager* systemManager{ nullptr };
+		_sysmanager& System;
 
 		// Handle to engine's input manager
-		_inputmanager* inputManager{ nullptr };
+		_inputmanager& Input;
 
 		// Scene name
 		std::string sceneName{ "defaultScene" };
@@ -55,16 +56,16 @@ namespace bro
 	protected: // Safe manager getters for scene derivation
 		/// @brief Get the scene manager
 		/// @return Scene manager
-		_scenemanager& Scenes() { if (sceneManager == nullptr) { throw std::runtime_error("Scene manager not initialized"); } return *sceneManager; }
+		//_scenemanager& Scenes() { if (sceneManager == nullptr) { throw std::runtime_error("Scene manager not initialized"); } return *sceneManager; }
 		/// @brief Get the time manager
 		/// @return Time manager
-		_timemanager& Time() { if (timeManager == nullptr) { throw std::runtime_error("Time manager not initialized"); } return *timeManager; }
+		//_timemanager& Time() { if (timeManager == nullptr) { throw std::runtime_error("Time manager not initialized"); } return *timeManager; }
 		/// @brief Get the system manager
 		/// @return System manager
-		_sysmanager& System() { if (systemManager == nullptr) { throw std::runtime_error("System manager not initialized"); } return *systemManager; }
+		//_sysmanager& System() { if (systemManager == nullptr) { throw std::runtime_error("System manager not initialized"); } return *systemManager; }
 		/// @brief Get the input manager
 		/// @return Input manager
-		_inputmanager& Input() { if (inputManager == nullptr) { throw std::runtime_error("Input manager not initialized"); } return *inputManager; }
+		//_inputmanager& Input() { if (inputManager == nullptr) { throw std::runtime_error("Input manager not initialized"); } return *inputManager; }
 
 	private: // Engine related internal methods
 		friend engine;
@@ -77,14 +78,14 @@ namespace bro
 
 		/// @brief Allow the engine to connect to the scene on creation
 		/// @param _scenes Reference to the scene manager
-		void EngineConnect(_scenemanager& _scenes, _timemanager& _time, _sysmanager& _system,
-			_inputmanager& _input) 
-		{ 
-			sceneManager = &_scenes; 
-			timeManager = &_time;
-			systemManager = &_system;
-			inputManager = &_input;
-		};
+		//void EngineConnect(_scenemanager& _scenes, _timemanager& _time, _sysmanager& _system,
+		//	_inputmanager& _input) 
+		//{ 
+		//	sceneManager = &_scenes; 
+		//	timeManager = &_time;
+		//	systemManager = &_system;
+		//	inputManager = &_input;
+		//};
 
 	public: // Scene related methods
 		// gameobject& CreateObject()
@@ -118,7 +119,12 @@ namespace bro
 
 		/// @brief Scene constructor
 		/// @param _sceneName Name to be given to instantiated scene
-		scene(const char* _sceneName) : sceneName{ _sceneName } {};
+		scene(const char* _sceneName, _scenemanager& _sceneManager, _timemanager& _timeManager,
+			_sysmanager& _systemManager, _inputmanager& _inputManager
+			) 
+			: sceneName{ _sceneName }, Scenes{ _sceneManager }, Time{ _timeManager },
+			System{ _systemManager }, Input{ _inputManager }
+		{};
 	};
 }
 
