@@ -17,6 +17,7 @@
 // STL dependencies
 #include <vector>
 #include <string>
+#include <type_traits>
 
 namespace bro
 {
@@ -29,11 +30,12 @@ namespace bro
 		// Time manager
 		_timemanager timeManager;
 
+		// Engine system manager
+		_sysmanager systemManager;
+
 		// Input manager
 		_inputmanager inputManager;
 
-		// Engine system manager
-		_sysmanager systemManager;
 
 	private: // Internal members
 
@@ -49,7 +51,27 @@ namespace bro
 		/// @brief Run game engine
 		void Run();
 
-		void AddScene(scene& _scene);
+		/// @brief Create a new scene
+		/// @tparam s Scene class or derivation of scene class
+		/// @param _sceneName Name for the scene
+		/// @return Pointer to the dynamically created scene, will need to be freed
+		template <class s>
+		s* CreateScene(const char* _sceneName)
+		{
+			// Compile time check to make sure object is deriving from scene class
+			static_assert(std::is_base_of<scene, s>::value, "Class does not derive from base scene");
+			s* newScene = new s(scene(_sceneName, sceneManager, timeManager, systemManager, inputManager));
+			sceneManager.AddScene(*newScene);
+			return newScene;
+		}
+
+		/// @brief Create a default scene object
+		/// @param _sceneName Name for the scene
+		/// @return Pointer to the dynamically created scene, will need to be freed
+		scene* CreateScene(const char* _sceneName)
+		{
+			return CreateScene<scene>(_sceneName);
+		}
 
 		engine(const char* _title, int _windowWidth, int _windowHeight);
 		engine() {};
