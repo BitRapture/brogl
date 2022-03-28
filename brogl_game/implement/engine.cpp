@@ -5,7 +5,12 @@ namespace bro
 
 	void engine::Start()
 	{
+		// Initialize SDL and opengl context 
+		systemManager.window = bro::InitializeContext(systemManager.title.c_str(), 
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, systemManager.windowWidth, systemManager.windowHeight);
 
+		// Start managers
+		sceneManager.EngineStart();
 	}
 
 	void engine::Exit()
@@ -46,6 +51,19 @@ namespace bro
 		}
 
 		Exit();
+	}
+
+	void engine::AddScene(scene& _scene)
+	{
+		_scene.EngineConnect(sceneManager, timeManager, systemManager, inputManager);
+		sceneManager.AddScene(_scene);
+	}
+
+	engine::engine(const char* _title, int _windowWidth, int _windowHeight)
+	{
+		systemManager.title = _title;
+		systemManager.windowWidth = _windowWidth;
+		systemManager.windowHeight = _windowHeight;
 	}
 
 }
