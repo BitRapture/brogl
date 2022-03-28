@@ -2,6 +2,9 @@
 #ifndef _SYSMANAGER_H_
 #define _SYSMANAGER_H_
 
+// External dependencies
+#include <SDL2/SDL.h>
+
 // STL dependencies
 #include <string>
 
@@ -19,6 +22,12 @@ namespace bro
 		// Window title
 		std::string title{ "Untitled Project" };
 
+		// Window dimensions
+		int windowWidth{ 1280 }, windowHeight{ 720 };
+
+		// Handle to the main SDL window
+		SDL_Window* window{ nullptr };
+
 	public:
 		/// @brief Quit game engine runtime
 		void Quit() { quitting = true; };
@@ -27,8 +36,12 @@ namespace bro
 		/// @return Quitting flag
 		const bool& IsQuitting() { return quitting; }
 
-		void SetTitle(const char* _title) { title = _title; }
+		/// @brief Set the window title
+		/// @param _title Title text
+		void SetTitle(const char* _title) { title = _title; SDL_SetWindowTitle(window, title.c_str()); }
 
+		/// @brief Get the current window title
+		/// @return Title text
 		std::string GetTitle() { return title; }
 	};
 
