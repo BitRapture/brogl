@@ -53,12 +53,6 @@ namespace bro
 		Exit();
 	}
 
-	void engine::AddScene(scene& _scene)
-	{
-		_scene.EngineConnect(sceneManager, timeManager, systemManager, inputManager);
-		sceneManager.AddScene(_scene);
-	}
-
 	engine::engine(const char* _title, int _windowWidth, int _windowHeight)
 	{
 		systemManager.title = _title;
