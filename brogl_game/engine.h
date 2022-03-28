@@ -22,18 +22,21 @@ namespace bro
 {
 	class engine
 	{
-	private: // Internal managers
+	protected: // Internal managers
 		// Scene manager
 		_scenemanager sceneManager;
 
 		// Time manager
 		_timemanager timeManager;
 
+		// Input manager
+		_inputmanager inputManager;
+
 		// Engine system manager
 		_sysmanager systemManager;
 
-		// Input manager
-		_inputmanager inputManager;
+	private: // Internal members
+
 
 	private: // Internal methods
 		/// @brief Start and initialize game engine 
@@ -46,13 +49,9 @@ namespace bro
 		/// @brief Run game engine
 		void Run();
 
-		void AddScene(scene& _scene) 
-		{ 
-			_scene.EngineConnect(sceneManager, timeManager, systemManager); 
-			sceneManager.AddScene(_scene); 
-		}
+		void AddScene(scene& _scene);
 
-		engine(const char* _title) { systemManager.title = _title; }
+		engine(const char* _title, int _windowWidth, int _windowHeight);
 		engine() {};
 	};
 }
