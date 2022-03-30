@@ -11,11 +11,25 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+#include <list>
 
 namespace bro
 {
 
 	class engine;
+
+	// Button axes allow for a range between -1 and 1
+	struct axis
+	{
+		// Positive and negative key scancodes to check
+		SDL_Scancode posKey, negKey;
+		// Controller axis to check
+		SDL_GameControllerAxis controllerAxis;
+		// Positive and negative controller buttons to check
+		SDL_GameControllerButton posButton, negButton;
+		// Enabled input check flags 
+		bool enableKeys{ false }, enableAxis{ false }, enableButtons{ false };
+	};
 
 	class _inputmanager
 	{
@@ -33,16 +47,15 @@ namespace bro
 		// Mouse mask for changed buttons
 		int mouseMask{ 0 };
 
-		// Button axes allow for a range between -1 and 1
-		struct axis
-		{
-			// Positive and negative key scancodes to check
-			SDL_Scancode posKey, negKey;
-		};
-		// Axis list 
+		// Axis array 
 		std::vector<axis> buttonAxes;
 		// Indices map to retreive index for specific axis
 		std::unordered_map<std::string, size_t> axesIndices;
+
+		// Game controller list
+		std::vector<SDL_GameController*> controllers;
+		// Game controller dead zone
+		float controllerDeadZone = 0.005;
 
 	private: // Internal engine methods
 		friend engine;
@@ -51,11 +64,19 @@ namespace bro
 
 		void EnginePostUpdate();
 
+		void EngineStart();
+
+	private: // Internal methods
+		void CloseControllers();
+
 	public:
+		bool GetKey(const SDL_Keycode& _keyCode);
 		bool GetKey(const SDL_Scancode& _scanCode);
 
+		bool GetKeyDown(const SDL_Keycode& _keyCode);
 		bool GetKeyDown(const SDL_Scancode& _scanCode);
 
+		bool GetKeyUp(const SDL_Keycode& _keyCode);
 		bool GetKeyUp(const SDL_Scancode& _scanCode);
 
 		bool GetMouseButton(const int& _button);
@@ -68,10 +89,15 @@ namespace bro
 
 		size_t GetAxisIndex(const char* _axisName);
 
-		float GetAxis(const char* _axisName);
-		float GetAxis(const size_t& _axisIndex);
+		float GetAxis(const char* _axisName, const size_t& _controller = 0);
+		float GetAxis(const size_t& _axisIndex, const size_t& _controller = 0);
 
-		void AddAxis(const char* _axisName, const SDL_Scancode& _positiveKey, const SDL_Scancode& _negativeKey);
+		void AddAxis(const char* _axisName, const SDL_Scancode& _posKey, const SDL_Scancode& _negKey);
+		void AddAxis(const char* _axisName, const axis& _axisParams);
+
+		size_t FetchControllers();
+		size_t GetControllers() { return controllers.size(); }
+		void SetControllerDeadZone(const float& _size) { controllerDeadZone = _size; }
 
 	public:
 		_inputmanager();
