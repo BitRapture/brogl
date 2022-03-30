@@ -5,11 +5,15 @@ namespace bro
 
 	void engine::Start()
 	{
-		// Initialize SDL and opengl context 
+		// Initialize SDL
+		if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0) { throw std::runtime_error("Failed to initialize SDL"); }
+
+		// Initialize SDL opengl context 
 		systemManager.window = bro::InitializeContext(systemManager.title.c_str(), 
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, systemManager.windowWidth, systemManager.windowHeight);
 
 		// Start managers
+		inputManager.EngineStart();
 		sceneManager.EngineStart();
 	}
 
