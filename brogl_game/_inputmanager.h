@@ -55,7 +55,7 @@ namespace bro
 		// Game controller list
 		std::vector<SDL_GameController*> controllers;
 		// Game controller dead zone
-		float controllerDeadZone = 0.005;
+		float controllerDeadZone = 0.005f;
 
 	private: // Internal engine methods
 		friend engine;

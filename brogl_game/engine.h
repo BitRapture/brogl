@@ -8,6 +8,8 @@
 #include "_timemanager.h"
 #include "_sysmanager.h"
 #include "_inputmanager.h"
+#include "_rendermanager.h"
+#include "_objectmanager.h"
 #include "scene.h"
 
 // External dependencies
@@ -36,6 +38,11 @@ namespace bro
 		// Input manager
 		_inputmanager inputManager;
 
+		// Rendering manager
+		_rendermanager renderManager;
+
+		// Handle to engine's object and resource manager
+		_objectmanager objectManager;
 
 	private: // Internal members
 
@@ -51,7 +58,7 @@ namespace bro
 		/// @brief Run game engine
 		void Run();
 
-		/// @brief Create a new scene
+		/// @brief Create a new scene and add to scene manager
 		/// @tparam s Scene class or derivation of scene class
 		/// @param _sceneName Name for the scene
 		/// @return Pointer to the dynamically created scene, will need to be freed
@@ -60,7 +67,7 @@ namespace bro
 		{
 			// Compile time check to make sure object is deriving from scene class
 			static_assert(std::is_base_of<scene, s>::value, "Class does not derive from base scene");
-			s* newScene = new s(scene(_sceneName, sceneManager, timeManager, systemManager, inputManager));
+			s* newScene = new s(scene(_sceneName, { sceneManager, timeManager, systemManager, inputManager, renderManager, objectManager }));
 			sceneManager.AddScene(*newScene);
 			return newScene;
 		}
@@ -71,6 +78,13 @@ namespace bro
 		scene* CreateScene(const char* _sceneName)
 		{
 			return CreateScene<scene>(_sceneName);
+		}
+
+		/// @brief Add scene to scene manager manually
+		/// @param _scene Scene to add
+		void AddScene(scene* _scene)
+		{
+			sceneManager.AddScene(*_scene);
 		}
 
 		engine(const char* _title, int _windowWidth, int _windowHeight);
