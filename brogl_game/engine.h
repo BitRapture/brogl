@@ -67,7 +67,7 @@ namespace bro
 		{
 			// Compile time check to make sure object is deriving from scene class
 			static_assert(std::is_base_of<scene, s>::value, "Class does not derive from base scene");
-			s* newScene = new s(scene(_sceneName, { sceneManager, timeManager, systemManager, inputManager, renderManager, objectManager }));
+			s* newScene = new s({ sceneManager, timeManager, systemManager, inputManager, renderManager, objectManager });
 			sceneManager.AddScene(*newScene);
 			return newScene;
 		}
@@ -88,7 +88,6 @@ namespace bro
 		}
 
 		engine(const char* _title, int _windowWidth, int _windowHeight);
-		engine() {};
 	};
 }
 
