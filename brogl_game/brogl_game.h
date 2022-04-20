@@ -5,5 +5,6 @@
 // ALL brogl_game headers
 #include "engine.h"
 #include "scene.h"
+#include "component.h"
 
 #endif // !_BROGL_GAME_H_
