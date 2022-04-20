@@ -78,6 +78,12 @@ namespace bro
 	/// @return Filled out attribute parameter struct
 	attribparam CreateAttrib3D(std::string _name, GLenum _dataType);
 
+	/// @brief Create an attribute parameter for parsing 2D variables
+	/// @param _name Attribute name
+	/// @param _dataType Data type of the attribute
+	/// @return Filled out attribute parameter struct
+	attribparam CreateAttrib2D(std::string _name, GLenum _dataType);
+
 	/// @brief Create a VAO parameter, bind attributes to one vbo
 	/// @param _vbo Handle to the vbo
 	/// @param _attribs Attributes to bind to the vbo
