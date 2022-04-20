@@ -10,6 +10,8 @@
 #include "_inputmanager.h"
 #include "_rendermanager.h"
 #include "managers.h"
+#include "component.h"
+#include "gameobject.h"
 
 // External dependencies
 #include <SDL2/SDL.h>
@@ -18,6 +20,7 @@
 // STL dependencies
 #include <vector>
 #include <string>
+#include <list>
 
 namespace bro
 {
@@ -27,17 +30,8 @@ namespace bro
 	class scene
 	{
 	private:
-		// Object pooling
-		// gameobject => *
-
-		// Object refs with physics components
-		// gameobject -> component => physics => *
-
-		// Object refs with render components
-		// gameobject -> component => render => *
-
-		// Object refs with camera components
-		// gameObject -> component => camera => *
+		// Runtime object list
+		std::list<gameobject*> gameObjects;
 
 	protected:
 		// Handle to engine's scene manager
@@ -69,10 +63,19 @@ namespace bro
 
 		/// @brief Allow the engine to render the scene
 		void EngineRender();
+		
+		/// @brief Allow the scene manager to load
+		void EngineOnLoad();
 
 	public: // Scene related methods
 		// gameobject& CreateObject()
 		
+		void AddGameObject(gameobject* _object)
+		{
+			_object->tiedScene = this;
+			gameObjects.push_back(_object);
+		}
+
 
 	public: // Virtual methods
 		/// @brief Called when the scene is loaded
@@ -82,7 +85,6 @@ namespace bro
 		virtual void SceneOnUnload() { };
 
 		/// @brief Called late when the scene is updated
-		/// @param _deltaTime Delta time (todo: create Time struct)
 		virtual void SceneUpdate() { };
 
 		/// @brief Called late when the scene is rendered
@@ -103,8 +105,8 @@ namespace bro
 
 		/// @brief Scene constructor
 		/// @param _sceneName Name to be given to instantiated scene
-		scene(const char* _sceneName, const managers& _managers)
-			: sceneName{ _sceneName }, Scenes{ _managers.Scenes }, Time{ _managers.Time },
+		scene(const managers& _managers)
+			: Scenes{ _managers.Scenes }, Time{ _managers.Time },
 			System{ _managers.System }, Input{ _managers.Input }, Render{ _managers.Render },
 			Objects{ _managers.Objects }
 		{};
