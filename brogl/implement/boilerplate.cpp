@@ -2,6 +2,7 @@
 
 // Link to header
 #include "../boilerplate.h"
+
 namespace bro
 {
 	SDL_Window* InitializeContext(const char* _title, int _x, int _y, int _width, int _height, Uint32 _flags)
@@ -132,8 +133,13 @@ namespace bro
 		glBindTexture(_target, t.id);
 		// Create texture from pixel data
 		glTexImage2D(_target, _level, _internalformat, _width, _height, 0, _format, _type, _data);
+		// Clamp edges
+		glTexParameteri(_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		// Generate mipmap for texture (might separate for memory)
 		glGenerateMipmap(_target);
+		glTexParameteri(_target, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
+		glTexParameteri(_target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		// Unbind from texture
 		glBindTexture(_target, 0);
 		return t;
@@ -142,6 +148,12 @@ namespace bro
 	attribparam CreateAttrib3D(std::string _name, GLenum _dataType)
 	{
 		attribparam a{ _name, 3, _dataType };
+		return a;
+	}
+
+	attribparam CreateAttrib2D(std::string _name, GLenum _dataType)
+	{
+		attribparam a{ _name, 2, _dataType };
 		return a;
 	}
 
