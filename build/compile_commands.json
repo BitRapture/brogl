@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/bitrapture/Projects/brogl/build",
+  "command": "/usr/bin/g++ -I/home/bitrapture/Projects/brogl/src -I/usr/include/SDL2 -g -o CMakeFiles/brgl.dir/src/brgl/brgl.cpp.o -c /home/bitrapture/Projects/brogl/src/brgl/brgl.cpp",
+  "file": "/home/bitrapture/Projects/brogl/src/brgl/brgl.cpp",
+  "output": "CMakeFiles/brgl.dir/src/brgl/brgl.cpp.o"
+},
+{
+  "directory": "/home/bitrapture/Projects/brogl/build",
+  "command": "/usr/bin/g++ -I/home/bitrapture/Projects/brogl/src -isystem /usr/include/SDL2 -g -o CMakeFiles/demo.dir/src/demo/main.cpp.o -c /home/bitrapture/Projects/brogl/src/demo/main.cpp",
+  "file": "/home/bitrapture/Projects/brogl/src/demo/main.cpp",
+  "output": "CMakeFiles/demo.dir/src/demo/main.cpp.o"
+}
+]

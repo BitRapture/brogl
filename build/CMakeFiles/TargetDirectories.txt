@@ -1,0 +1,4 @@
+/home/bitrapture/Projects/brogl/build/CMakeFiles/brgl.dir
+/home/bitrapture/Projects/brogl/build/CMakeFiles/demo.dir
+/home/bitrapture/Projects/brogl/build/CMakeFiles/edit_cache.dir
+/home/bitrapture/Projects/brogl/build/CMakeFiles/rebuild_cache.dir
