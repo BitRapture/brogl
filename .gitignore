@@ -1,3 +1,2 @@
-res/
-examples/
-main.cpp
+.vscode/
+build/
