@@ -22,11 +22,11 @@ target_link_libraries(
  brgl ${SDL2_LIBRARIES} GLEW::glew ${OPENGL_LIBRARIES} ${GLM_LIBRARIES}
 )
 
-add_executable(demo
+add_executable(brgldemo
  src/demo/main.cpp
  src/demo/demo.cpp
 )
-set_property(TARGET demo PROPERTY CXX_STANDARD 17)
+set_property(TARGET brgldemo PROPERTY CXX_STANDARD 17)
 target_link_libraries(
- demo brgl 
+ brgldemo brgl 
 )
