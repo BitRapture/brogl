@@ -11,6 +11,7 @@ namespace br
 
     private:
         void Initialize();
+        void ResizeViewport();
 
     private:
         gl::Status initStatus;

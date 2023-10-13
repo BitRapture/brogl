@@ -70,7 +70,7 @@ namespace br::gl
         for (GLuint shaderID : shaderObjects)
         {
             glDetachShader(shaderProgramID, shaderID);
-            glDeleteShader(shaderProgramID);
+            glDeleteShader(shaderID);
         }
         shaderObjects.clear();
         glDeleteProgram(shaderProgramID);
@@ -104,5 +104,21 @@ namespace br::gl
         buffer.resize(max);
         glGetProgramInfoLog(_programID, max, &max, &buffer[0]);
         return buffer;
+    }
+
+    const GLuint CreateVertexArrayObject()
+    {
+        GLuint vaoID;
+        glGenVertexArrays(1, &vaoID);
+        return vaoID;
+    }
+
+    VertexArrayObject::VertexArrayObject()
+    {
+        vaoID = CreateVertexArrayObject();
+    }
+    VertexArrayObject::~VertexArrayObject()
+    {
+        
     }
 }
