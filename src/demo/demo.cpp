@@ -40,8 +40,7 @@ namespace br
                     case SDL_QUIT:
                         runtime = false;
                         break;
-                    case SDL_WINDOWEVENT_FOCUS_GAINED:
-                    case SDL_WINDOWEVENT_RESIZED:
+                    case SDL_KEYUP:
                         ResizeViewport();
                         break;
                 }
@@ -74,7 +73,7 @@ namespace br
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-        initStatus = br::gl::CreateWindowContext(sdlWindow, "Demo Window", 1280, 720);
+        initStatus = br::gl::CreateWindowContext(sdlWindow, glContext, "Demo Window", 1280, 720);
         ResizeViewport();
     }
 

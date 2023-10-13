@@ -23,7 +23,7 @@ namespace br::gl
         OK
     };
 
-    const Status CreateWindowContext(SDL_Window*& _window, const char* _windowName, const int& _windowWidth, const int& _windowHeight);
+    const Status CreateWindowContext(SDL_Window*& _window, SDL_GLContext& _glContext, const char* _windowName, const int& _windowWidth, const int& _windowHeight);
 
     class ShaderProgram
     {

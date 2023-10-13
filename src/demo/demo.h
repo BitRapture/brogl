@@ -16,6 +16,7 @@ namespace br
     private:
         gl::Status initStatus;
         SDL_Window* sdlWindow;
+        SDL_GLContext glContext;
 
     public:
         DemoApplication() :

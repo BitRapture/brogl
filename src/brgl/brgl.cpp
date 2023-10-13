@@ -21,14 +21,14 @@ namespace br
 
 namespace br::gl
 {
-    const Status CreateWindowContext(SDL_Window*& _window, const char* _windowName, const int& _windowWidth, const int& _windowHeight)
+    const Status CreateWindowContext(SDL_Window*& _window, SDL_GLContext& _glContext, const char* _windowName, const int& _windowWidth, const int& _windowHeight)
     {
         _window = SDL_CreateWindow(_windowName, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _windowWidth, _windowHeight, SDL_WINDOW_SHOWN | SDL_WINDOW_ALWAYS_ON_TOP);
         if (_window == nullptr)
             return Status::ERROR_WINDOW_CREATION;
 
-        SDL_GLContext sdlGLContext = SDL_GL_CreateContext(_window);
-        if (sdlGLContext == nullptr)
+        _glContext = SDL_GL_CreateContext(_window);
+        if (_glContext == nullptr)
             return Status::ERROR_GLCONTEXT_INIT;
 
         GLenum glewStatus = glewInit();
