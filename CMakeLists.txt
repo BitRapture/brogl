@@ -15,7 +15,9 @@ include_directories(
 )
 
 add_library(brgl
- src/brgl/brgl.cpp
+ src/brgl/boilerplate.cpp 
+ src/brgl/primitives.cpp
+ src/brgl/brgl.h
 )
 set_property(TARGET brgl PROPERTY CXX_STANDARD 17)
 target_link_libraries(

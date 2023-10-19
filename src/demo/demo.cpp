@@ -14,10 +14,16 @@ namespace br
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
             0.0f, 0.5f, 0.0f
-        }, GL_FLOAT);
+        }, GL_FLOAT, 0);
+        gl::BufferObject<float> triangleColors({
+            1.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f
+        }, GL_FLOAT, 1);
 
         gl::VertexArrayObject triangleVAO;
         triangleVAO.LinkBufferObject<float>(triangleVBO, 3);
+        triangleVAO.LinkBufferObject<float>(triangleColors, 3);
 
         gl::ShaderProgram shaderProgram;
         GLuint vertShader = shaderProgram.CompileShader(
@@ -29,12 +35,13 @@ namespace br
             OpenTextFile("./shader.frag").c_str()
         );
         if (shaderProgram.Link() != gl::Status::OK)
+        {
             std::cout << gl::GetShaderStatus(vertShader) << std::endl;
+            return;
+        }
 
         GLint colorUniform = shaderProgram["triangleColor"];
         float r, g, b;
-        
-        ResizeViewport();
 
         bool runtime = true;
         SDL_Event sdlEvent;

@@ -1,5 +1,4 @@
-#include "brgl.h"
-
+#include "boilerplate.h"
 #include <fstream>
 
 namespace br
