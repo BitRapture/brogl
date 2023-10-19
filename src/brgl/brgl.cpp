@@ -58,7 +58,18 @@ namespace br::gl
         GLint success = 0;
         glGetProgramiv(shaderProgramID, GL_LINK_STATUS, (int *)&success);
         isLinked = success != GL_FALSE;
+        if (isLinked)
+        {
+            for (GLuint shaderID : shaderObjects)
+                glDeleteShader(shaderID);
+            shaderObjects.clear();
+        }
         return success == GL_FALSE ? Status::ERROR_SHADER_COMPILATION : Status::OK;
+    }
+
+    const GLint ShaderProgram::operator[](const char* _uniformName)
+    {
+        return glGetUniformLocation(shaderProgramID, _uniformName);
     }
 
     ShaderProgram::ShaderProgram()
@@ -67,11 +78,6 @@ namespace br::gl
     }
     ShaderProgram::~ShaderProgram()
     {
-        for (GLuint shaderID : shaderObjects)
-        {
-            glDetachShader(shaderProgramID, shaderID);
-            glDeleteShader(shaderID);
-        }
         shaderObjects.clear();
         glDeleteProgram(shaderProgramID);
     }
@@ -119,6 +125,6 @@ namespace br::gl
     }
     VertexArrayObject::~VertexArrayObject()
     {
-        
+        glDeleteVertexArrays(1, &vaoID);
     }
 }

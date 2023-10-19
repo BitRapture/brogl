@@ -34,6 +34,9 @@ namespace br::gl
         const GLuint GetID() { return shaderProgramID; }
         const bool IsLinked() { return isLinked; }
 
+    public:
+        const GLint operator[](const char* _uniformName);
+
     private:
         GLuint shaderProgramID;
         std::vector<GLuint> shaderObjects;
@@ -79,7 +82,10 @@ namespace br::gl
             SetAttributes(0); 
             glGenBuffers(1, &bufferID);
         }
-        ~BufferObject() { }
+        ~BufferObject() 
+        { 
+            glDeleteBuffers(1, &bufferID);
+        }
     };
 
     const GLuint CreateVertexArrayObject();

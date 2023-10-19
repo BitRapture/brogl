@@ -1,11 +1,15 @@
 #include "demo.h"
 #include <iostream>
+#include <cmath>
 
 namespace br
 {
 
     void DemoApplication::Run()
     {
+        if (initStatus != gl::Status::OK)
+            return;
+
         gl::BufferObject<float> triangleVBO({
             -0.5f, -0.5f, 0.0f,
             0.5f, -0.5f, 0.0f,
@@ -14,8 +18,6 @@ namespace br
 
         gl::VertexArrayObject triangleVAO;
         triangleVAO.LinkBufferObject<float>(triangleVBO, 3);
-
-        std::cout << triangleVAO.GetID() << std::endl;
 
         gl::ShaderProgram shaderProgram;
         GLuint vertShader = shaderProgram.CompileShader(
@@ -28,7 +30,12 @@ namespace br
         );
         if (shaderProgram.Link() != gl::Status::OK)
             std::cout << gl::GetShaderStatus(vertShader) << std::endl;
+
+        GLint colorUniform = shaderProgram["triangleColor"];
+        float r, g, b;
         
+        ResizeViewport();
+
         bool runtime = true;
         SDL_Event sdlEvent;
         while (runtime)
@@ -45,10 +52,18 @@ namespace br
                         break;
                 }
             }
+
+            r += 0.001f;
+            if (r > 1.0f) r = 0.0f;
+            g = std::sin(r * 3.141f);
+            b = std::cos(r * 3.141f);
+
             glClearColor(0.75f, 0.05f, 0.95f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
             glUseProgram(shaderProgram.GetID());
+            glUniform4f(colorUniform, r, g, b, 1.0f);
+            
             glBindVertexArray(triangleVAO.GetID());
             glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -74,7 +89,6 @@ namespace br
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
         initStatus = br::gl::CreateWindowContext(sdlWindow, glContext, "Demo Window", 1280, 720);
-        ResizeViewport();
     }
 
     DemoApplication::~DemoApplication()
