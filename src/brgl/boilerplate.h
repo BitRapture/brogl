@@ -56,7 +56,6 @@ namespace br::gl
     class BufferObject
     {
     public:
-        // to-do, create factory function
         void SetData(const std::vector<T>& _bufferData) { bufferData = _bufferData; }
         void SetAttributes(const GLuint& _layout, const GLenum& _normalizedData = GL_FALSE)
         {
@@ -135,7 +134,7 @@ namespace br::gl
         VertexArrayObject& operator=(const VertexArrayObject&) = delete;
     };
 
-    const GLuint CreateTexture2D(const std::vector<unsigned char>& _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
+    const GLuint CreateTexture2D(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
 };
 
 namespace br::gl
@@ -160,7 +159,7 @@ namespace br::gl
         glBufferData(_bufferObject.bufferType, _bufferObject.bufferData.size() * sizeof(T), &_bufferObject.bufferData.front(), _drawType);
         glBindBuffer(_elementObject.bufferType, _elementObject.bufferID);
         glBufferData(_elementObject.bufferType, _elementObject.bufferData.size() * sizeof(V), &_elementObject.bufferData.front(), _drawType);
-        glVertexAttribPointer(_bufferObject.layout, _vertices, _bufferObject.dataType, _bufferObject.normalizedData, 3 * sizeof(T), NULL);
+        glVertexAttribPointer(_bufferObject.layout, _vertices, _bufferObject.dataType, _bufferObject.normalizedData, 0, NULL);
         glEnableVertexAttribArray(_bufferObject.layout);
         glBindBuffer(_bufferObject.bufferType, 0);
         glBindVertexArray(0);

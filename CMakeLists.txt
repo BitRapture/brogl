@@ -8,6 +8,7 @@ find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 include_directories(
  src/
+ contrib/stb/
  ${SDL2_INCLUDE_DIRS}
  ${GLEW_INCLUDE_DIRS}
  ${OPENGL_INCLUDE_DIRS}
@@ -18,6 +19,7 @@ add_library(brgl
  src/brgl/boilerplate.cpp 
  src/brgl/primitives.cpp
  src/brgl/brgl.h
+ contrib/stb/stb_image.h
 )
 set_property(TARGET brgl PROPERTY CXX_STANDARD 17)
 target_link_libraries(

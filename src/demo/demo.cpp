@@ -1,4 +1,7 @@
 #include "demo.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include <iostream>
 #include <cmath>
 
@@ -25,7 +28,17 @@ namespace br
             return;
         }
 
-        gl::Quad quad(-0.5f, -0.5f, 1.0f, 1.0f);
+        stbi_set_flip_vertically_on_load(true);
+        int width, height, channels;
+        unsigned char* data = stbi_load("./demo.png", &width, &height, &channels, 0);
+        if (data == nullptr)
+        {
+            std::cout << "Texture failure" << std::endl;
+            return;
+        }
+
+        gl::Sprite sprite(data, width, height, -0.5f, -0.5f, 1.0f, 1.0f);
+        stbi_image_free(data);
 
         bool runtime = true;
         SDL_Event sdlEvent;
@@ -48,7 +61,7 @@ namespace br
             glClear(GL_COLOR_BUFFER_BIT);
 
             glUseProgram(shaderProgram.GetID());
-            quad.Draw();
+            sprite.Render();
 
             SDL_GL_SwapWindow(sdlWindow);
         }
