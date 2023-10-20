@@ -10,21 +10,6 @@ namespace br
         if (initStatus != gl::Status::OK)
             return;
 
-        gl::BufferObject<float> triangleVBO({
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.0f, 0.5f, 0.0f
-        }, GL_FLOAT, 0);
-        gl::BufferObject<float> triangleColors({
-            1.0f, 0.0f, 0.0f,
-            0.0f, 1.0f, 0.0f,
-            0.0f, 0.0f, 1.0f
-        }, GL_FLOAT, 1);
-
-        gl::VertexArrayObject triangleVAO;
-        triangleVAO.LinkBufferObject<float>(triangleVBO, 3);
-        triangleVAO.LinkBufferObject<float>(triangleColors, 3);
-
         gl::ShaderProgram shaderProgram;
         GLuint vertShader = shaderProgram.CompileShader(
             GL_VERTEX_SHADER,
@@ -40,8 +25,7 @@ namespace br
             return;
         }
 
-        GLint colorUniform = shaderProgram["triangleColor"];
-        float r, g, b;
+        gl::Quad quad(-0.5f, -0.5f, 1.0f, 1.0f);
 
         bool runtime = true;
         SDL_Event sdlEvent;
@@ -60,19 +44,11 @@ namespace br
                 }
             }
 
-            r += 0.001f;
-            if (r > 1.0f) r = 0.0f;
-            g = std::sin(r * 3.141f);
-            b = std::cos(r * 3.141f);
-
             glClearColor(0.75f, 0.05f, 0.95f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
             glUseProgram(shaderProgram.GetID());
-            glUniform4f(colorUniform, r, g, b, 1.0f);
-            
-            glBindVertexArray(triangleVAO.GetID());
-            glDrawArrays(GL_TRIANGLES, 0, 3);
+            quad.Draw();
 
             SDL_GL_SwapWindow(sdlWindow);
         }

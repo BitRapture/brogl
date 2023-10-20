@@ -126,4 +126,14 @@ namespace br::gl
     {
         glDeleteVertexArrays(1, &vaoID);
     }
+
+    const GLuint CreateTexture2D(const std::vector<unsigned char>& _textureData, const GLint& _width, const GLint& _height, const GLenum& _format)
+    {
+        GLuint textureID;
+        glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, _format, GL_UNSIGNED_BYTE, _textureData.data());
+        glBindTexture(GL_TEXTURE_2D, 0);
+        return textureID;
+    }
 }
