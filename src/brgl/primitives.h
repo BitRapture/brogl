@@ -6,31 +6,31 @@
 namespace br::gl
 {
     // class Triangle
-    class Quad
+    class BasicQuad
     {
     public:
         virtual void Render();
 
     protected:
-        BufferObject<float> vertices;
-        BufferObject<unsigned int> indices;
+        BufferObjectHandle vertices;
+        BufferObjectHandle indices;
         VertexArrayObject vao;
 
     public:
-        Quad(const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight);
+        BasicQuad(const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight);
     };
 
-    class Sprite : public Quad
+    class BasicSprite : public BasicQuad
     {
     public:
         void Render() override;
 
     private:
         GLuint textureID;
-        BufferObject<float> texCoords;
+        BufferObjectHandle texCoords;
 
     public:
-        Sprite(unsigned char* _textureData, const GLint& _texWidth, const GLint& _texHeight, const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight);
+        BasicSprite(unsigned char* _textureData, const GLint& _texWidth, const GLint& _texHeight, const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight);
     };
     // class Mesh
 }

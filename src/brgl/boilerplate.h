@@ -73,6 +73,7 @@ namespace br::gl
 
     private:
         friend class VertexArrayObject;
+        friend class BufferObjectHandle;
         std::vector<T> bufferData;
         GLuint bufferID;
         GLenum bufferType;
@@ -113,15 +114,39 @@ namespace br::gl
         BufferObject& operator=(const BufferObject&) = delete;
     };
 
+    class BufferObjectHandle
+    {
+    public:
+        const GLuint GetID() { return bufferID; }
+        template<typename T>
+        void operator=(BufferObject<T>& _bufferObject)
+        {
+            Release();
+            std::swap(bufferID, _bufferObject.bufferID);
+        }
+
+    private:
+        void Release() { if (bufferID == 0) return; glDeleteBuffers(1, &bufferID); bufferID = 0; }
+
+    private:
+        GLuint bufferID;
+
+    public:
+        BufferObjectHandle() : bufferID{ 0 } { }
+        ~BufferObjectHandle() { Release(); }
+        BufferObjectHandle(const BufferObjectHandle&) = delete;
+        BufferObjectHandle& operator=(const BufferObjectHandle&) = delete;
+    };
+
     const GLuint CreateVertexArrayObject();
 
     class VertexArrayObject
     {
     public:
         template<typename T>
-        void LinkBufferObject(const BufferObject<T>& _bufferObject, const GLuint& _vertices, const GLenum& _drawType = GL_STATIC_DRAW);
+        void LinkBufferObject(const BufferObject<T>& _bufferObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
         template<typename T, typename V>
-        void LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _vertices, const GLenum& _drawType = GL_STATIC_DRAW);
+        void LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
         const GLuint GetID() { return vaoID; }
     
     private:
@@ -140,26 +165,26 @@ namespace br::gl
 namespace br::gl
 {
     template<typename T>
-    void VertexArrayObject::LinkBufferObject(const BufferObject<T>& _bufferObject, const GLuint& _vertices, const GLenum& _drawType)
+    void VertexArrayObject::LinkBufferObject(const BufferObject<T>& _bufferObject, const GLuint& _sizePerVertex, const GLenum& _drawType)
     {
         glBindVertexArray(vaoID);
         glBindBuffer(_bufferObject.bufferType, _bufferObject.bufferID);
         glBufferData(_bufferObject.bufferType, _bufferObject.bufferData.size() * sizeof(T), &_bufferObject.bufferData.front(), _drawType);
-        glVertexAttribPointer(_bufferObject.layout, _vertices, _bufferObject.dataType, _bufferObject.normalizedData, 0, NULL);
+        glVertexAttribPointer(_bufferObject.layout, _sizePerVertex, _bufferObject.dataType, _bufferObject.normalizedData, 0, NULL);
         glEnableVertexAttribArray(_bufferObject.layout);
         glBindBuffer(_bufferObject.bufferType, 0);
         glBindVertexArray(0);
     };
 
     template<typename T, typename V>
-    void VertexArrayObject::LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _vertices, const GLenum& _drawType)
+    void VertexArrayObject::LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType)
     {
         glBindVertexArray(vaoID);
         glBindBuffer(_bufferObject.bufferType, _bufferObject.bufferID);
         glBufferData(_bufferObject.bufferType, _bufferObject.bufferData.size() * sizeof(T), &_bufferObject.bufferData.front(), _drawType);
         glBindBuffer(_elementObject.bufferType, _elementObject.bufferID);
         glBufferData(_elementObject.bufferType, _elementObject.bufferData.size() * sizeof(V), &_elementObject.bufferData.front(), _drawType);
-        glVertexAttribPointer(_bufferObject.layout, _vertices, _bufferObject.dataType, _bufferObject.normalizedData, 0, NULL);
+        glVertexAttribPointer(_bufferObject.layout, _sizePerVertex, _bufferObject.dataType, _bufferObject.normalizedData, 0, NULL);
         glEnableVertexAttribArray(_bufferObject.layout);
         glBindBuffer(_bufferObject.bufferType, 0);
         glBindVertexArray(0);

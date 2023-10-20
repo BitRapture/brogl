@@ -37,22 +37,23 @@ namespace br
             return;
         }
 
-        gl::Sprite sprite(data, width, height, -0.5f, -0.5f, 1.0f, 1.0f);
+        gl::BasicSprite sprite(data, width, height, -1.0f, -1.0f, 2.0f, 2.0f);
         stbi_image_free(data);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         bool runtime = true;
         SDL_Event sdlEvent;
         while (runtime)
         {
+            ResizeViewport();
             while (SDL_PollEvent(&sdlEvent))
             {
                 switch (sdlEvent.type)
                 {
                     case SDL_QUIT:
                         runtime = false;
-                        break;
-                    case SDL_KEYUP:
-                        ResizeViewport();
                         break;
                 }
             }
