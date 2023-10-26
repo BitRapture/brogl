@@ -19,7 +19,6 @@ add_library(brgl
  src/brgl/boilerplate.cpp 
  src/brgl/primitives.cpp
  src/brgl/brgl.h
- contrib/stb/stb_image.h
 )
 set_property(TARGET brgl PROPERTY CXX_STANDARD 17)
 target_link_libraries(

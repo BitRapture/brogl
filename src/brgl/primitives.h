@@ -30,7 +30,7 @@ namespace br::gl
         BufferObjectHandle texCoords;
 
     public:
-        BasicSprite(unsigned char* _textureData, const GLint& _texWidth, const GLint& _texHeight, const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight);
+        BasicSprite(const std::vector<unsigned char>& _textureData, const GLint& _texWidth, const GLint& _texHeight, const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight);
     };
     // class Mesh
 }

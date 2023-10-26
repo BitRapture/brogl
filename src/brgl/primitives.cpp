@@ -37,7 +37,7 @@ namespace br::gl
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
-    BasicSprite::BasicSprite(unsigned char* _textureData, const GLint& _texWidth, const GLint& _texHeight, const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight)
+    BasicSprite::BasicSprite(const std::vector<unsigned char>& _textureData, const GLint& _texWidth, const GLint& _texHeight, const float& _normX, const float& _normY, const float& _normWidth, const float& _normHeight)
         : BasicQuad(_normX, _normY, _normWidth, _normHeight)
     {
         textureID = CreateTexture2D(_textureData, _texWidth, _texHeight, GL_RGBA);

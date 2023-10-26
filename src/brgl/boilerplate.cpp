@@ -127,7 +127,7 @@ namespace br::gl
         glDeleteVertexArrays(1, &vaoID);
     }
 
-    const GLuint CreateTexture2D(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format)
+    const GLuint CreateTexture2D(std::vector<unsigned char> _textureData, const GLint& _width, const GLint& _height, const GLenum& _format)
     {
         GLuint textureID;
         glGenTextures(1, &textureID);
@@ -139,7 +139,7 @@ namespace br::gl
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, _format, GL_UNSIGNED_BYTE, _textureData);
+        glTexImage2D(GL_TEXTURE_2D, 0, _format, _width, _height, 0, _format, GL_UNSIGNED_BYTE, _textureData.data());
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
         return textureID;

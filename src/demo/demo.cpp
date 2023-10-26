@@ -1,6 +1,4 @@
 #include "demo.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
 #include <iostream>
 #include <cmath>
@@ -28,20 +26,10 @@ namespace br
             return;
         }
 
-        stbi_set_flip_vertically_on_load(true);
-        int width, height, channels;
-        unsigned char* data = stbi_load("./demo.png", &width, &height, &channels, 0);
-        if (data == nullptr)
-        {
-            std::cout << "Texture failure" << std::endl;
-            return;
-        }
+        gl::BasicQuad quad(-1.0f, -1.0f, 2.0f, 2.0f);
 
-        gl::BasicSprite sprite(data, width, height, -1.0f, -1.0f, 2.0f, 2.0f);
-        stbi_image_free(data);
-
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        float time = 0.0f;
+        GLuint timeLoc = shaderProgram["time"];
 
         bool runtime = true;
         SDL_Event sdlEvent;
@@ -58,11 +46,15 @@ namespace br
                 }
             }
 
+            time += 0.0001f;
+
             glClearColor(0.75f, 0.05f, 0.95f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            glUseProgram(shaderProgram.GetID());
-            sprite.Render();
+            shaderProgram.Bind();
+            glUniform1f(timeLoc, time);
+            quad.Render();
+            shaderProgram.Unbind();
 
             SDL_GL_SwapWindow(sdlWindow);
         }

@@ -33,6 +33,8 @@ namespace br::gl
         const Status Link();
         const GLuint GetID() { return shaderProgramID; }
         const bool IsLinked() { return isLinked; }
+        void Bind() { glUseProgram(shaderProgramID); }
+        void Unbind() { glUseProgram(0); }
 
     public:
         const GLint operator[](const char* _uniformName);
@@ -64,6 +66,8 @@ namespace br::gl
         }
         const size_t GetSize() { return bufferData.size(); }
         const GLuint GetID() { return bufferID; }
+        void Bind() { glBindBuffer(bufferType, bufferID); }
+        void Unbind() { glBindBuffer(bufferType, 0); }
 
     public:
         T& operator[](const size_t& _index) { return bufferData[_index]; }
@@ -148,6 +152,8 @@ namespace br::gl
         template<typename T, typename V>
         void LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
         const GLuint GetID() { return vaoID; }
+        void Bind() { glBindVertexArray(vaoID); }
+        void Unbind() { glBindVertexArray(0); }
     
     private:
         GLuint vaoID;
@@ -159,7 +165,7 @@ namespace br::gl
         VertexArrayObject& operator=(const VertexArrayObject&) = delete;
     };
 
-    const GLuint CreateTexture2D(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
+    const GLuint CreateTexture2D(std::vector<unsigned char> _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
 };
 
 namespace br::gl
