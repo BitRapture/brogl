@@ -2,7 +2,6 @@
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #include <GL/gl.h>
-#include <glm/glm.hpp>
 
 #include <vector>
 #include <string>

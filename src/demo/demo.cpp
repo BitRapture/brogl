@@ -8,6 +8,8 @@ namespace br
 
     void DemoApplication::Run()
     {
+        std::cout << "Running" << std::endl;
+
         if (initStatus != gl::Status::OK)
             return;
 
@@ -22,7 +24,8 @@ namespace br
         );
         if (shaderProgram.Link() != gl::Status::OK)
         {
-            std::cout << gl::GetShaderStatus(vertShader) << std::endl;
+            std::cout << "Shader error" << "\n" 
+            << gl::GetShaderStatus(vertShader) << std::endl;
             return;
         }
 
