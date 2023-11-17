@@ -100,7 +100,7 @@ namespace br::gl
             SetAttributes(_layout);
             glGenBuffers(1, &bufferID);
         }
-        void operator=(BufferObject&& _other)
+        void operator=(BufferObject<T>&& _other)
         {
             if (this != &_other)
             {
