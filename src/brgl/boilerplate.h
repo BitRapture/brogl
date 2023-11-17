@@ -100,7 +100,7 @@ namespace br::gl
             SetAttributes(_layout);
             glGenBuffers(1, &bufferID);
         }
-        void operator=(BufferObject<T>&& _other)
+        void operator=(BufferObject<T>& _other)
         {
             if (this != &_other)
             {
@@ -164,7 +164,7 @@ namespace br::gl
         VertexArrayObject& operator=(const VertexArrayObject&) = delete;
     };
 
-    const GLuint CreateTexture2D(std::vector<unsigned char> _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
+    const GLuint CreateTexture2D(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
 };
 
 namespace br::gl
