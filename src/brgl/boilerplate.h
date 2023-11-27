@@ -17,12 +17,9 @@ namespace br::gl
     enum class Status
     {
         ERROR = 0,
-        ERROR_WINDOW_CREATION, ERROR_GLCONTEXT_INIT, ERROR_GLEW_INIT,
         ERROR_SHADER_COMPILATION,
         OK
     };
-
-    const Status CreateWindowContext(SDL_Window*& _window, SDL_GLContext& _glContext, const char* _windowName, const int& _windowWidth, const int& _windowHeight);
 
     class ShaderProgram
     {
