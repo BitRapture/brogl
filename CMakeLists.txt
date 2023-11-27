@@ -39,10 +39,8 @@ endif()
 
 add_library(brgl
  src/brgl/boilerplate.cpp 
- src/brgl/primitives.cpp
  
  src/brgl/boilerplate.h
- src/brgl/primitives.h
  src/brgl/brgl.h
 )
 set_property(TARGET brgl PROPERTY CXX_STANDARD 17)

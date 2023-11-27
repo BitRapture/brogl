@@ -9,7 +9,7 @@
 
 namespace br
 {
-    std::string OpenTextFile(const char* _filePath);
+    std::string open_text_file(const char* _filePath);
 }
 
 namespace br::gl
@@ -24,13 +24,13 @@ namespace br::gl
     class ShaderProgram
     {
     public:
-        void AddShader(const GLuint& _shaderID);
-        const GLuint CompileShader(const GLenum& _shaderType, const char* _source);
-        const Status Link();
-        const GLuint GetID() { return shaderProgramID; }
-        const bool IsLinked() { return isLinked; }
-        void Bind() { glUseProgram(shaderProgramID); }
-        void Unbind() { glUseProgram(0); }
+        void add_shader(const GLuint& _shaderID);
+        const GLuint compile_shader(const GLenum& _shaderType, const char* _source);
+        const Status link();
+        const GLuint get_id() { return shaderProgramID; }
+        const bool is_linked() { return isLinked; }
+        void bind() { glUseProgram(shaderProgramID); }
+        void unbind() { glUseProgram(0); }
 
     public:
         const GLint operator[](const char* _uniformName);
@@ -46,30 +46,30 @@ namespace br::gl
         ShaderProgram(const ShaderProgram&) = delete;
         ShaderProgram& operator=(const ShaderProgram&) = delete;
     };
-    const Status CompileShader(GLuint& _shaderID, const GLenum& _shaderType, const char* _source);
-    std::string GetShaderStatus(const GLuint& _shaderID);
-    std::string GetProgramStatus(const GLuint& _programID);
+    const Status compile_shader(GLuint& _shaderID, const GLenum& _shaderType, const char* _source);
+    std::string get_shader_status(const GLuint& _shaderID);
+    std::string get_program_status(const GLuint& _programID);
 
     template <typename T>
     class BufferObject
     {
     public:
-        void SetData(const std::vector<T>& _bufferData) { bufferData = _bufferData; }
-        void SetAttributes(const GLuint& _layout, const GLenum& _normalizedData = GL_FALSE)
+        void set_data(const std::vector<T>& _bufferData) { bufferData = std::move(_bufferData); }
+        void set_attributes(const GLuint& _layout, const GLenum& _normalizedData = GL_FALSE)
         {
             layout = _layout;
             normalizedData = _normalizedData;
         }
-        const size_t GetSize() { return bufferData.size(); }
-        const GLuint GetID() { return bufferID; }
-        void Bind() { glBindBuffer(bufferType, bufferID); }
-        void Unbind() { glBindBuffer(bufferType, 0); }
+        const size_t get_size() { return bufferData.size(); }
+        const GLuint get_id() { return bufferID; }
+        void bind() { glBindBuffer(bufferType, bufferID); }
+        void unbind() { glBindBuffer(bufferType, 0); }
 
     public:
         T& operator[](const size_t& _index) { return bufferData[_index]; }
 
     private:
-        void Release() { if (bufferID == 0) return; glDeleteBuffers(1, &bufferID); bufferID = 0; }
+        void release() { if (bufferID == 0) return; glDeleteBuffers(1, &bufferID); bufferID = 0; }
 
     private:
         friend class VertexArrayObject;
@@ -87,29 +87,29 @@ namespace br::gl
             dataType = GL_FLOAT;
             bufferType = GL_ARRAY_BUFFER;
             bufferID = 0;
-            SetAttributes(0);
+            set_attributes(0);
         }
         BufferObject(const std::vector<T>& _bufferData, const GLenum& _dataType, const GLuint& _layout = 0, const GLenum& _bufferType = GL_ARRAY_BUFFER) 
         { 
             dataType = _dataType;
             bufferType = _bufferType;
-            SetData(_bufferData);
-            SetAttributes(_layout);
+            set_data(_bufferData);
+            set_attributes(_layout);
             glGenBuffers(1, &bufferID);
         }
         void operator=(BufferObject<T>& _other)
         {
             if (this != &_other)
             {
-                Release();
+                release();
                 std::swap(bufferData, _other.bufferData);
                 std::swap(bufferID, _other.bufferID);
                 bufferType = _other.bufferType;
                 dataType = _other.dataType;
-                SetAttributes(_other.layout, _other.normalizedData);
+                set_attributes(_other.layout, _other.normalizedData);
             }
         }
-        ~BufferObject() { Release(); }
+        ~BufferObject() { release(); }
         BufferObject(const BufferObject&) = delete;
         BufferObject& operator=(const BufferObject&) = delete;
     };
@@ -117,39 +117,39 @@ namespace br::gl
     class BufferObjectHandle
     {
     public:
-        const GLuint GetID() { return bufferID; }
+        const GLuint get_id() { return bufferID; }
         template<typename T>
         void operator=(BufferObject<T>& _bufferObject)
         {
-            Release();
+            release();
             std::swap(bufferID, _bufferObject.bufferID);
         }
 
     private:
-        void Release() { if (bufferID == 0) return; glDeleteBuffers(1, &bufferID); bufferID = 0; }
+        void release() { if (bufferID == 0) return; glDeleteBuffers(1, &bufferID); bufferID = 0; }
 
     private:
         GLuint bufferID;
 
     public:
         BufferObjectHandle() : bufferID{ 0 } { }
-        ~BufferObjectHandle() { Release(); }
+        ~BufferObjectHandle() { release(); }
         BufferObjectHandle(const BufferObjectHandle&) = delete;
         BufferObjectHandle& operator=(const BufferObjectHandle&) = delete;
     };
 
-    const GLuint CreateVertexArrayObject();
+    const GLuint create_vertex_array_object();
 
     class VertexArrayObject
     {
     public:
         template<typename T>
-        void LinkBufferObject(const BufferObject<T>& _bufferObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
+        void link_buffer_object(const BufferObject<T>& _bufferObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
         template<typename T, typename V>
-        void LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
-        const GLuint GetID() { return vaoID; }
-        void Bind() { glBindVertexArray(vaoID); }
-        void Unbind() { glBindVertexArray(0); }
+        void link_buffer_object(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType = GL_STATIC_DRAW);
+        const GLuint get_id() { return vaoID; }
+        void bind() { glBindVertexArray(vaoID); }
+        void unbind() { glBindVertexArray(0); }
     
     private:
         GLuint vaoID;
@@ -161,13 +161,13 @@ namespace br::gl
         VertexArrayObject& operator=(const VertexArrayObject&) = delete;
     };
 
-    const GLuint CreateTexture2D(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
+    const GLuint create_texture_2d(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format);
 };
 
 namespace br::gl
 {
     template<typename T>
-    void VertexArrayObject::LinkBufferObject(const BufferObject<T>& _bufferObject, const GLuint& _sizePerVertex, const GLenum& _drawType)
+    void VertexArrayObject::link_buffer_object(const BufferObject<T>& _bufferObject, const GLuint& _sizePerVertex, const GLenum& _drawType)
     {
         glBindVertexArray(vaoID);
         glBindBuffer(_bufferObject.bufferType, _bufferObject.bufferID);
@@ -179,7 +179,7 @@ namespace br::gl
     };
 
     template<typename T, typename V>
-    void VertexArrayObject::LinkBufferObject(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType)
+    void VertexArrayObject::link_buffer_object(const BufferObject<T>& _bufferObject, const BufferObject<V>& _elementObject, const GLuint& _sizePerVertex, const GLenum& _drawType)
     {
         glBindVertexArray(vaoID);
         glBindBuffer(_bufferObject.bufferType, _bufferObject.bufferID);

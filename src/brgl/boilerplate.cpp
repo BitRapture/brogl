@@ -3,7 +3,7 @@
 
 namespace br
 {
-    std::string OpenTextFile(const char* _filePath)
+    std::string open_text_file(const char* _filePath)
     {
         std::ifstream textFile(_filePath, std::ios::in);
         if (!textFile.is_open())
@@ -20,21 +20,21 @@ namespace br
 
 namespace br::gl
 {
-    void ShaderProgram::AddShader(const GLuint& _shaderID)
+    void ShaderProgram::add_shader(const GLuint& _shaderID)
     {
         shaderObjects.push_back(_shaderID);
         glAttachShader(shaderProgramID, _shaderID);
     }
 
-    const GLuint ShaderProgram::CompileShader(const GLenum& _shaderType, const char* _source)
+    const GLuint ShaderProgram::compile_shader(const GLenum& _shaderType, const char* _source)
     {
         GLuint shaderID;
-        if (gl::CompileShader(shaderID, _shaderType, _source) == gl::Status::OK)
-            AddShader(shaderID);
+        if (gl::compile_shader(shaderID, _shaderType, _source) == gl::Status::OK)
+            add_shader(shaderID);
         return shaderID;
     }
 
-    const Status ShaderProgram::Link()
+    const Status ShaderProgram::link()
     {
         glLinkProgram(shaderProgramID);
         GLint success = 0;
@@ -64,7 +64,7 @@ namespace br::gl
         glDeleteProgram(shaderProgramID);
     }
 
-    const Status CompileShader(GLuint& _shaderID, const GLenum& _shaderType, const char* _source)
+    const Status compile_shader(GLuint& _shaderID, const GLenum& _shaderType, const char* _source)
     {
         _shaderID = glCreateShader(_shaderType);
         glShaderSource(_shaderID, 1, &_source, NULL);
@@ -74,7 +74,7 @@ namespace br::gl
         return success == GL_FALSE ? Status::ERROR_SHADER_COMPILATION : Status::OK;
     }
 
-    std::string GetShaderStatus(const GLuint& _shaderID)
+    std::string get_shader_status(const GLuint& _shaderID)
     {
         GLint max = 0;
         glGetShaderiv(_shaderID, GL_INFO_LOG_LENGTH, &max);
@@ -84,7 +84,7 @@ namespace br::gl
         return buffer;
     }
 
-    std::string GetProgramStatus(const GLuint& _programID)
+    std::string get_program_status(const GLuint& _programID)
     {
         GLint max = 0;
         glGetProgramiv(_programID, GL_INFO_LOG_LENGTH, &max);
@@ -94,7 +94,7 @@ namespace br::gl
         return buffer;
     }
 
-    const GLuint CreateVertexArrayObject()
+    const GLuint create_vertex_array_object()
     {
         GLuint vaoID;
         glGenVertexArrays(1, &vaoID);
@@ -103,14 +103,14 @@ namespace br::gl
 
     VertexArrayObject::VertexArrayObject()
     {
-        vaoID = CreateVertexArrayObject();
+        vaoID = create_vertex_array_object();
     }
     VertexArrayObject::~VertexArrayObject()
     {
         glDeleteVertexArrays(1, &vaoID);
     }
 
-    const GLuint CreateTexture2D(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format)
+    const GLuint create_texture_2d(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format)
     {
         GLuint textureID;
         glGenTextures(1, &textureID);
