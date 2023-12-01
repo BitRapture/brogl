@@ -92,7 +92,7 @@ namespace br::gl
         }
         BufferObject(const std::vector<T>& _bufferData, const GLenum& _dataType, const GLuint& _layout = 0, const GLenum& _bufferType = GL_ARRAY_BUFFER) 
         { 
-            set_attributes(_layout, _dataType, _bufferType);
+            set_attributes(_layout, _bufferType, _dataType);
             set_data(_bufferData);
             glGenBuffers(1, &bufferID);
         }
@@ -103,7 +103,7 @@ namespace br::gl
                 release();
                 std::swap(bufferData, _other.bufferData);
                 std::swap(bufferID, _other.bufferID);
-                set_attributes(_other.layout, dataType, bufferType, _other.normalizedData);
+                set_attributes(_other.layout, bufferType, dataType, _other.normalizedData);
             }
         }
         ~BufferObject() { release(); }
