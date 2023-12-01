@@ -55,9 +55,12 @@ namespace br::gl
     {
     public:
         void set_data(const std::vector<T>& _bufferData) { bufferData = std::move(_bufferData); }
-        void set_attributes(const GLuint& _layout, const GLenum& _normalizedData = GL_FALSE)
+        void set_attributes(const GLuint& _layout, const GLuint& _bufferType = GL_ARRAY_BUFFER,
+            const GLuint& _dataType = GL_FLOAT, const GLenum& _normalizedData = GL_FALSE)
         {
             layout = _layout;
+            bufferType = _bufferType;
+            dataType = _dataType;
             normalizedData = _normalizedData;
         }
         const size_t get_size() { return bufferData.size(); }
@@ -84,17 +87,13 @@ namespace br::gl
     public:
         BufferObject()
         {
-            dataType = GL_FLOAT;
-            bufferType = GL_ARRAY_BUFFER;
             bufferID = 0;
             set_attributes(0);
         }
         BufferObject(const std::vector<T>& _bufferData, const GLenum& _dataType, const GLuint& _layout = 0, const GLenum& _bufferType = GL_ARRAY_BUFFER) 
         { 
-            dataType = _dataType;
-            bufferType = _bufferType;
+            set_attributes(_layout, _dataType, _bufferType);
             set_data(_bufferData);
-            set_attributes(_layout);
             glGenBuffers(1, &bufferID);
         }
         void operator=(BufferObject<T>& _other)
@@ -104,9 +103,7 @@ namespace br::gl
                 release();
                 std::swap(bufferData, _other.bufferData);
                 std::swap(bufferID, _other.bufferID);
-                bufferType = _other.bufferType;
-                dataType = _other.dataType;
-                set_attributes(_other.layout, _other.normalizedData);
+                set_attributes(_other.layout, dataType, bufferType, _other.normalizedData);
             }
         }
         ~BufferObject() { release(); }
