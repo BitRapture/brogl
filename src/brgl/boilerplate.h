@@ -77,9 +77,9 @@ namespace br::gl
             if (this != &_bufferObject)
             {
                 release();
-                std::swap(bufferData, _other.bufferData);
-                std::swap(bufferID, _other.bufferID);
-                set_attributes(_other.layout, bufferType, dataType, _other.normalizedData);
+                std::swap(bufferData, _bufferObject.bufferData);
+                std::swap(bufferID, _bufferObject.bufferID);
+                set_attributes(_bufferObject.layout, bufferType, dataType, _bufferObject.normalizedData);
             }
         }
 
