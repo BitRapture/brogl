@@ -161,6 +161,17 @@ namespace br::gl
         const GLuint get_id() { return vaoID; }
         void bind() { glBindVertexArray(vaoID); }
         void unbind() { glBindVertexArray(0); }
+        void swap(VertexArrayObject& _vao)
+        {
+            if (this != &_vao)
+            {
+                release();
+                std::swap(vaoID, _vao.vaoID);
+            }
+        }
+
+    private:
+        void release() { if (vaoID == 0) return; glDeleteVertexArrays(1, &vaoID); }
     
     private:
         GLuint vaoID;

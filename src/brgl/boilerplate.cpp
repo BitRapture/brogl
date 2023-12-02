@@ -107,7 +107,7 @@ namespace br::gl
     }
     VertexArrayObject::~VertexArrayObject()
     {
-        glDeleteVertexArrays(1, &vaoID);
+        release();
     }
 
     const GLuint create_texture_2d(unsigned char* _textureData, const GLint& _width, const GLint& _height, const GLenum& _format)
