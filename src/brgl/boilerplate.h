@@ -67,6 +67,11 @@ namespace br::gl
         const GLuint get_id() { return bufferID; }
         void bind() { glBindBuffer(bufferType, bufferID); }
         void unbind() { glBindBuffer(bufferType, 0); }
+        void generate_buffer()
+        {
+            release();
+            glGenBuffers(1, &bufferID);
+        }
 
     public:
         T& operator[](const size_t& _index) { return bufferData[_index]; }
