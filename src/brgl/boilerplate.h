@@ -72,6 +72,16 @@ namespace br::gl
             release();
             glGenBuffers(1, &bufferID);
         }
+        void swap(BufferObject<T>& _bufferObject)
+        {
+            if (this != &_bufferObject)
+            {
+                release();
+                std::swap(bufferData, _other.bufferData);
+                std::swap(bufferID, _other.bufferID);
+                set_attributes(_other.layout, bufferType, dataType, _other.normalizedData);
+            }
+        }
 
     public:
         T& operator[](const size_t& _index) { return bufferData[_index]; }
@@ -103,13 +113,7 @@ namespace br::gl
         }
         void operator=(BufferObject<T>& _other)
         {
-            if (this != &_other)
-            {
-                release();
-                std::swap(bufferData, _other.bufferData);
-                std::swap(bufferID, _other.bufferID);
-                set_attributes(_other.layout, bufferType, dataType, _other.normalizedData);
-            }
+            swap(_other);
         }
         ~BufferObject() { release(); }
         BufferObject(const BufferObject&) = delete;
@@ -125,6 +129,11 @@ namespace br::gl
         {
             release();
             std::swap(bufferID, _bufferObject.bufferID);
+        }
+        void swap(BufferObjectHandle& _bufferObjectHandle)
+        {
+            release();
+            std::swap(bufferID, _bufferObjectHandle.bufferID);
         }
 
     private:
